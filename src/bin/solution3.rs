@@ -34,23 +34,24 @@ struct Solution;
 
 impl Solution {
     pub fn is_valid(word: String) -> bool {
-        let mut count_vocal = 0;
-        let mut count_consonat = 0;
+        let mut vocal = false;
+        let mut consonat = false;
         if word.len() < 3 {
             false
         } else {
             for c in word.chars() {
                 match c {
-                    'a' | 'e' | 'i' | 'o' | 'u' | 'A' | 'E' | 'I' | 'O' | 'U' => count_vocal += 1,
+                    'a' | 'e' | 'i' | 'o' | 'u' | 'A' | 'E' | 'I' | 'O' | 'U' => vocal = true,
                     c if c.is_ascii_digit() => (),
-                    c if c.is_ascii_alphabetic() => count_consonat += 1,
+                    c if c.is_ascii_alphabetic() => consonat = true,
                     _ => return false,
                 }
             }
-            count_vocal * count_consonat > 0
+            vocal && consonat
         }
     }
 }
+// prueba
 fn main() {
     let prueba = "a3$e".to_string();
     println!("R: {}", { Solution::is_valid(prueba) })
