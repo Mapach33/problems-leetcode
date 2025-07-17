@@ -17,9 +17,6 @@ fn main() {
     let ejemplos = vec![("()", true), ("()[]{}", true)];
     for (s, esperado) in ejemplos {
         let resultado = Solution2::is_valid(s.to_string());
-        println!(
-            "Input: {:<7} | Output: {:<5} | Esperado: {}",
-            s, resultado, esperado
-        );
+        println!("Input: {s:<7} | Output: {resultado:<5} | Esperado: {esperado}");
     }
 }
