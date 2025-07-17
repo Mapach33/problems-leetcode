@@ -1,33 +1,26 @@
 use std::cmp::max;
 struct Solution;
-
 impl Solution {
     pub fn maximum_length(nums: Vec<i32>) -> i32 {
-        let n = nums.len();
-
-        let mut dp = [1; 2];
-        let mut res = 1;
-        for i in 1..n {
-            let mut new_dp = dp;
-            for parity in 0..1 {
-                for j in 0..i {
-                    if (nums[j] + nums[i]) % 2 == parity {
-                        new_dp[parity as usize] =
-                            max(new_dp[parity as usize], dp[parity as usize] + 1);
-                    }
+        let mut res = 0;
+        for parity in 0..=1 {
+            let mut dp_parity = [0; 2];
+            for &num in &nums {
+                let num_parity = (num % 2) as usize;
+                if parity == 0 {
+                    dp_parity[num_parity] += 1
+                } else {
+                    dp_parity[num_parity] =
+                        max(dp_parity[num_parity], dp_parity[1 - num_parity] + 1);
                 }
             }
-            dp = new_dp;
-            res = max(res, max(dp[0], dp[1]));
+            res = max(res, max(dp_parity[0], dp_parity[1]));
         }
-
         res
     }
 }
 
 fn main() {
-    let numeros = vec![1, 8, 4, 2, 4];
-
-    let result = Solution::maximum_length(numeros);
-    println!("resultado: {result}")
+    let numeros = vec![1, 2, 3, 4, 5];
+    println!("{}", Solution::maximum_length(numeros));
 }
