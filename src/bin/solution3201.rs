@@ -3,32 +3,30 @@ struct Solution;
 
 impl Solution {
     pub fn maximum_length(nums: Vec<i32>) -> i32 {
-        if nums.len() <= 2 {
-            return nums.len() as i32;
-        }
+        let n = nums.len();
 
-        let mut res = 0;
-
-        for parity in 0..=1 {
-            // Empezamos siempre incluyendo el primer elemento
-            let mut last = nums[0];
-            let mut count = 1;
-
-            //
-            for i in nums.iter().skip(1) {
-                if ((last + i) % 2) == parity {
-                    count += 1;
-                    last = *i; // Avanzamos el último elemento usado
+        let mut dp = [1; 2];
+        let mut res = 1;
+        for i in 1..n {
+            let mut new_dp = dp;
+            for parity in 0..1 {
+                for j in 0..i {
+                    if (nums[j] + nums[i]) % 2 == parity {
+                        new_dp[parity as usize] =
+                            max(new_dp[parity as usize], dp[parity as usize] + 1);
+                    }
                 }
             }
-            res = max(res, count);
+            dp = new_dp;
+            res = max(res, max(dp[0], dp[1]));
         }
+
         res
     }
 }
 
 fn main() {
-    let numeros = vec![1, 2, 1, 1, 2, 1, 2];
+    let numeros = vec![1, 8, 4, 2, 4];
 
     let result = Solution::maximum_length(numeros);
     println!("resultado: {result}")
